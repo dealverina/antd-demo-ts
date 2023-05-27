@@ -1,26 +1,34 @@
+import { Layout } from 'antd';
 import React from 'react';
-import logo from './logo.svg';
+import type { FC } from 'react';
+import 'antd/dist/reset.css';
 import './App.css';
 
-function App() {
+const App: FC = () => {
+  const { Header, Content, Footer, Sider } = Layout;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Layout hasSider>
+      <Sider
+        style={{
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          color: 'white'
+        }}
+      >
+        left sidebar
+      </Sider>
+      <Layout className="site-layout" style={{ marginLeft: 200 }}>
+        <Header style={{ color: 'white' }}>header</Header>
+        <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>main content</Content>
+        <Footer style={{ textAlign: 'center' }}>Demo AntD ©2023 Created by Dea Alverina</Footer>
+      </Layout>
+    </Layout>
+  )
 }
 
 export default App;
