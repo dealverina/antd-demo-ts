@@ -91,7 +91,7 @@ const App: FC = () => {
         onCollapse={(value) => setCollapsed(value)}
         width={300}
       >
-        <div className="demo-logo-vertical">LOGO</div>
+        <div className="demo-logo-vertical text-center">LOGO</div>
         <Menu
           theme="dark"
           mode="inline"
