@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, Dropdown, Layout, Menu, Space, theme } from "antd";
-import { dropdownItems, items as menuItems } from "./Items";
+import { items as menuItems } from "./Items";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import type { FC } from "react";
 import "./App.css";
@@ -8,32 +8,47 @@ import "./App.css";
 const { Header, Content, Footer, Sider } = Layout;
 
 const App: FC = () => {
+  const package_json = require("../package.json");
   const items = menuItems;
   const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState("dashboard");
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    setCollapsed(isMobile ? true : false);
+  }, [isMobile]);
+
+  const handleResize = () => {
+    if (window.innerWidth < 720) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
 
   const getActiveMenu = () => {
     let activeMenu = "";
 
     if (selectedMenu.includes("-")) {
       const splitKey = selectedMenu.split("-");
-      if(splitKey.length > 0) {
+      if (splitKey.length > 0) {
         let tampItems = items;
         let tampKey = splitKey[0];
-        for(let i = 0; i < splitKey.length; i++) {
+        for (let i = 0; i < splitKey.length; i++) {
           // eslint-disable-next-line no-loop-func
           const item = tampItems.find((val) => val?.key === tampKey);
           if (item) {
-            if(item.children) {
+            if (item.children) {
               tampItems = item.children;
-              tampKey += `-${splitKey[i+1]}` 
+              tampKey += `-${splitKey[i + 1]}`;
             } else {
               activeMenu = item.label;
             }
-          } 
+          }
         }
       }
     } else {
@@ -71,7 +86,10 @@ const App: FC = () => {
           onClick={(e) => setSelectedMenu(e.key)}
         />
       </Sider>
-      <Layout style={{ marginLeft: !collapsed ? 300 : 80 }}>
+      <Layout
+        style={{ marginLeft: !collapsed ? 300 : 80 }}
+        className={`${isMobile && !collapsed ? "hidden" : ""}`}
+      >
         <Header style={{ background: colorBgContainer }} className="px-4">
           <div className="flex">
             <div className="flex-1 font-bold">
@@ -82,7 +100,7 @@ const App: FC = () => {
                 <a onClick={(e) => e.preventDefault}>
                   <Space className="font-bold">
                     <Avatar icon={<UserOutlined />} />
-                    Nama Pengguna
+                    {isMobile ? "" : "Nama Pengguna"}
                     <DownOutlined />
                   </Space>
                 </a>
@@ -100,7 +118,7 @@ const App: FC = () => {
           main content
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Demo AntD ©2023 Created by Dea Alverina
+          Demo AntD ©2023 Created by Dea Alverina - ver.{package_json.version}
         </Footer>
       </Layout>
     </Layout>
