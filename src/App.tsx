@@ -97,6 +97,7 @@ const App: FC = () => {
             </div>
             <div>
               <Dropdown menu={{}} trigger={["click"]}>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a onClick={(e) => e.preventDefault}>
                   <Space className="font-bold">
                     <Avatar icon={<UserOutlined />} />
