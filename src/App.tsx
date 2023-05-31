@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Layout, Menu, theme } from "antd";
+import { Avatar, Dropdown, Layout, Menu, Space, theme } from "antd";
+import { dropdownItems, items as menuItems } from "./Items";
+import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import type { FC } from "react";
 import "./App.css";
-import { items as menuItems } from "./Items";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -18,7 +19,23 @@ const App: FC = () => {
     let activeMenu = "";
 
     if (selectedMenu.includes("-")) {
-      console.log(selectedMenu);
+      const splitKey = selectedMenu.split("-");
+      if(splitKey.length > 0) {
+        let tampItems = items;
+        let tampKey = splitKey[0];
+        for(let i = 0; i < splitKey.length; i++) {
+          // eslint-disable-next-line no-loop-func
+          const item = tampItems.find((val) => val?.key === tampKey);
+          if (item) {
+            if(item.children) {
+              tampItems = item.children;
+              tampKey += `-${splitKey[i+1]}` 
+            } else {
+              activeMenu = item.label;
+            }
+          } 
+        }
+      }
     } else {
       const item = items.find((val) => val?.key === selectedMenu);
       if (item) activeMenu = item.label;
@@ -38,6 +55,9 @@ const App: FC = () => {
           overflow: "auto",
           height: "100vh",
           position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
         }}
       >
         <div className="demo-logo-vertical flex items-center justify-center">
@@ -51,9 +71,24 @@ const App: FC = () => {
           onClick={(e) => setSelectedMenu(e.key)}
         />
       </Sider>
-      <Layout>
-        <Header style={{ padding: "0 0 0 1em", background: colorBgContainer }}>
-          <b>{getActiveMenu().toUpperCase()}</b>
+      <Layout style={{ marginLeft: !collapsed ? 300 : 80 }}>
+        <Header style={{ background: colorBgContainer }} className="px-4">
+          <div className="flex">
+            <div className="flex-1 font-bold">
+              {getActiveMenu().toUpperCase()}
+            </div>
+            <div>
+              <Dropdown menu={{}} trigger={["click"]}>
+                <a onClick={(e) => e.preventDefault}>
+                  <Space className="font-bold">
+                    <Avatar icon={<UserOutlined />} />
+                    Nama Pengguna
+                    <DownOutlined />
+                  </Space>
+                </a>
+              </Dropdown>
+            </div>
+          </div>
         </Header>
         <Content
           style={{
