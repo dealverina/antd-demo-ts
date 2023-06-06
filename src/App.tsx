@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Avatar, Dropdown, Layout, Menu, Space, theme } from "antd";
-import { items as menuItems } from "./Items";
+import { menuItems, dropdownItems as items } from "./Items";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import type { FC } from "react";
 import "./App.css";
@@ -9,7 +9,6 @@ const { Header, Content, Footer, Sider } = Layout;
 
 const App: FC = () => {
   const package_json = require("../package.json");
-  const items = menuItems;
   const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState("dashboard");
@@ -36,7 +35,7 @@ const App: FC = () => {
     if (selectedMenu.includes("-")) {
       const splitKey = selectedMenu.split("-");
       if (splitKey.length > 0) {
-        let tampItems = items;
+        let tampItems = menuItems;
         let tampKey = splitKey[0];
         for (let i = 0; i < splitKey.length; i++) {
           // eslint-disable-next-line no-loop-func
@@ -52,7 +51,7 @@ const App: FC = () => {
         }
       }
     } else {
-      const item = items.find((val) => val?.key === selectedMenu);
+      const item = menuItems.find((val) => val?.key === selectedMenu);
       if (item) activeMenu = item.label;
     }
 
@@ -82,7 +81,7 @@ const App: FC = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={[selectedMenu]}
-          items={items}
+          items={menuItems}
           onClick={(e) => setSelectedMenu(e.key)}
         />
       </Sider>
@@ -96,7 +95,7 @@ const App: FC = () => {
               {getActiveMenu().toUpperCase()}
             </div>
             <div>
-              <Dropdown menu={{}} trigger={["click"]}>
+              <Dropdown menu={{items}} trigger={["click"]}>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a onClick={(e) => e.preventDefault}>
                   <Space className="font-bold">

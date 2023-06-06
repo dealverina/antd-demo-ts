@@ -19,7 +19,7 @@ export interface ItemInterface {
   children?: ItemInterface[];
 }
 
-export const items: ItemInterface[] = [
+export const menuItems: ItemInterface[] = [
   {
     key: "dashboard",
     icon: React.createElement(HomeOutlined),
@@ -87,13 +87,7 @@ export const items: ItemInterface[] = [
   { key: "8", icon: React.createElement(ShopOutlined), label: "Menu 8" },
 ];
 
-export interface DropdownItemInterface extends Omit<MenuProps, 'items'> {
-  key?: string;
-  label?: any;
-  type?: string;
-}
-
-export const dropdownItems: DropdownItemInterface[] = [
+export const dropdownItems: MenuProps['items'] = [
   {
     key: '1',
     label: <a href="https://github.com/dealverina">Github</a>
