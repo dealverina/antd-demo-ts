@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
-import { Avatar, Dropdown, Layout, Menu, Space, theme } from "antd";
-import { menuItems, dropdownItems as items } from "./Items";
+import {
+  Avatar,
+  Breadcrumb,
+  Divider,
+  Dropdown,
+  Layout,
+  Menu,
+  Space,
+  theme,
+} from "antd";
+import {
+  menuItems,
+  dropdownItems as items,
+  BreadcrumbInterface,
+} from "./Items";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import type { FC } from "react";
 import "./App.css";
@@ -58,6 +71,34 @@ const App: FC = () => {
     return activeMenu;
   };
 
+  const getBreadcrumbItems = () => {
+    let breadcrumbItems: BreadcrumbInterface[] = [];
+
+    if (selectedMenu.includes("-")) {
+      const splitKey = selectedMenu.split("-");
+      if (splitKey.length > 0) {
+        let tampItems = menuItems;
+        let tampKey = splitKey[0];
+        for (let i = 0; i < splitKey.length; i++) {
+          // eslint-disable-next-line no-loop-func
+          const item = tampItems.find((val) => val?.key === tampKey);
+          if (item) {
+            breadcrumbItems.push({
+              title: item.label,
+            });
+
+            if (item.children) {
+              tampItems = item.children;
+              tampKey += `-${splitKey[i + 1]}`;
+            }
+          }
+        }
+      }
+    }
+
+    return breadcrumbItems;
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -95,7 +136,7 @@ const App: FC = () => {
               {getActiveMenu().toUpperCase()}
             </div>
             <div>
-              <Dropdown menu={{items}} trigger={["click"]}>
+              <Dropdown menu={{ items }} trigger={["click"]}>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a onClick={(e) => e.preventDefault}>
                   <Space className="font-bold">
@@ -115,7 +156,15 @@ const App: FC = () => {
             background: colorBgContainer,
           }}
         >
-          main content
+          {selectedMenu.includes("-") ? (
+            <>
+              <Breadcrumb className="mt-3" items={getBreadcrumbItems()} />
+              <Divider />
+            </>
+          ) : (
+            <></>
+          )}
+          <div className="text-xl">Main Content</div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
           Demo AntD ©2023 Created by Dea Alverina - ver.{package_json.version}

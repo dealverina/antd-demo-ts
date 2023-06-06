@@ -12,14 +12,14 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from 'antd';
 
-export interface ItemInterface {
+export interface MenuItemInterface {
   key: string;
   icon?: any;
   label: string;
-  children?: ItemInterface[];
+  children?: MenuItemInterface[];
 }
 
-export const menuItems: ItemInterface[] = [
+export const menuItems: MenuItemInterface[] = [
   {
     key: "dashboard",
     icon: React.createElement(HomeOutlined),
@@ -48,11 +48,11 @@ export const menuItems: ItemInterface[] = [
                 children: [
                   {
                     key: "1-1-1-2-1",
-                    label: "Children 1-1-1-1-1",
+                    label: "Children 1-1-1-2-1",
                   },
                   {
                     key: "1-1-1-2-2",
-                    label: "Children 1-1-1-1-2",
+                    label: "Children 1-1-1-2-2",
                   },
                 ],
               },
@@ -104,3 +104,7 @@ export const dropdownItems: MenuProps['items'] = [
     label: "Keluar"
   }
 ]
+
+export interface BreadcrumbInterface {
+  title?: string;
+}
